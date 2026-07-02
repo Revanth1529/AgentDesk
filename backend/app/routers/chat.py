@@ -1,18 +1,13 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
+from app.services.llm_service import get_llm_reply
 
 router = APIRouter()
 
+class ChatRequest(BaseModel):
+    message: str
 
 @router.post("/chat")
-def chat():
-    """
-    Week 2 - Dummy chat endpoint.
-
-    Returns hardcoded response for now.
-    Will connect to LLM in Week 3.
-    """
-    reply_text = (
-        "Hello! I am the NexusAI Support Bot."
-        " How can I help you today?"
-    )
-    return {"reply": reply_text}
+async def chat(req: ChatRequest):
+    reply = get_llm_reply(req.message)
+    return {"reply": reply}
