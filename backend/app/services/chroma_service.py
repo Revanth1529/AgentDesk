@@ -7,15 +7,18 @@ collection = client.get_or_create_collection(
 )
 
 
-def store_chunks(chunks, embeddings):
+def store_chunks(chunks, embeddings, source):
 
     ids = []
+    metadatas = []
 
     for i in range(len(chunks)):
-        ids.append(f"chunk_{i}")
+        ids.append(f"{source}_chunk_{i}")
+        metadatas.append({"source": source, "chunk_index": i})
 
-    collection.add(
+    collection.upsert(
         ids=ids,
         documents=chunks,
-        embeddings=embeddings
+        embeddings=embeddings,
+        metadatas=metadatas
     )

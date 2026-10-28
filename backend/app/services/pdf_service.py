@@ -1,3 +1,4 @@
+import os
 from pypdf import PdfReader
 from app.services.chunk_service import chunk_text
 from app.services.embedding_service import generate_embeddings
@@ -17,7 +18,7 @@ def extract_pdf_info(pdf_path):
 
     chunks = chunk_text(text)
     embeddings = generate_embeddings(chunks)
-    store_chunks(chunks, embeddings)
+    store_chunks(chunks, embeddings, os.path.basename(pdf_path))
     return {
         "pages": len(reader.pages),
         "characters": len(text),
