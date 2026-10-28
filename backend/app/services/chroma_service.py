@@ -16,9 +16,19 @@ def store_chunks(chunks, embeddings, source):
         ids.append(f"{source}_chunk_{i}")
         metadatas.append({"source": source, "chunk_index": i})
 
+    # Remove old chunks of this PDF first, in case a re-upload has fewer chunks
+    collection.delete(where={"source": source})
+
     collection.upsert(
         ids=ids,
         documents=chunks,
         embeddings=embeddings,
         metadatas=metadatas
     )
+
+
+def count_chunks(source):
+
+    result = collection.get(where={"source": source})
+
+    return len(result["ids"])
