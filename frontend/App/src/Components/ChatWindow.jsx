@@ -1,15 +1,7 @@
-import '../styles/ChatWindow.css';
-import MessageBubble from './MessageBubble';
+import '../styles/ChatWindow.css'
+import MessageBubble from './MessageBubble'
 
-const messages = [
-  { id: 1, sender: 'bot',  text: 'Hey! 👋 Welcome to NexusAI Support. How can I help you today?' },
-  { id: 2, sender: 'user', text: 'I need help with my order. It hasn\'t arrived yet.' },
-  { id: 3, sender: 'bot',  text: 'Sorry to hear that! Could you share your order ID so I can look into it?' },
-  { id: 4, sender: 'user', text: 'Sure, it\'s #4521.' },
-  { id: 5, sender: 'bot',  text: 'Got it, looking that up for you right now...' },
-];
-
-function ChatWindow() {
+function ChatWindow({ messages, loading }) {
   return (
     <>
       <div className="chat-header-bar">
@@ -27,14 +19,17 @@ function ChatWindow() {
 
       <div className="chat-window">
         <div className="date-divider">
-          <hr /><span>Today</span><hr />
+          | <hr /><span>Today</span><hr />
         </div>
+
         {messages.map(({ id, sender, text }) => (
           <MessageBubble key={id} sender={sender} text={text} />
         ))}
+
+        {loading && <MessageBubble sender="bot" text="Thinking..." />}
       </div>
     </>
-  );
+  )
 }
 
-export default ChatWindow;
+export default ChatWindow
